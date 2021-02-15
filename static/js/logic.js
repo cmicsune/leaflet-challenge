@@ -1,4 +1,4 @@
-var queryUrl= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson"
+var queryUrl= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson"+"2014-01-02&maxlongitude=180.0&minlongitude=-180.0&maxlatitude=90.0&minlatitude=-90.0";
 
 d3.json(queryUrl, function(data){
     createFeatures(data.features);
@@ -14,3 +14,6 @@ function createFeatures (earthquakeData){
     createMap(earthquakes);
 }
 
+function createMap(earthquake){
+    
+}
