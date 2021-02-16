@@ -14,6 +14,16 @@ function createFeatures (earthquakeData){
     createMap(earthquakes);
 }
 
-function createMap(earthquake){
-    
+function createMap(earthquakes){
+
 }
+var myMap = L.map("map", {
+    center: [0.00,0.00],
+    zoom: 2,
+    layers: [lightmap, earthquakes]
+  });
+
+
+  L.control.layers(baseMaps, overlayMaps, {
+    collapsed: false
+  }).addTo(myMap);
