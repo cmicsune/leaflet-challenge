@@ -1,40 +1,35 @@
-// grayscale background.
-var graymap_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?" +
-  "access_token=pk.eyJ1IjoibWFudWVsYW1hY2hhZG8iLCJhIjoiY2ppczQ0NzBtMWNydTNrdDl6Z2JhdzZidSJ9.BFD3qzgAC2kMoEZirGaDjA");
-// satellite background.
-var satellitemap_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?" +
-  "access_token=pk.eyJ1IjoibWFudWVsYW1hY2hhZG8iLCJhIjoiY2ppczQ0NzBtMWNydTNrdDl6Z2JhdzZidSJ9.BFD3qzgAC2kMoEZirGaDjA");
-// outdoors background.
-var outdoors_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/256/{z}/{x}/{y}?" +
-  "access_token=pk.eyJ1IjoibWFudWVsYW1hY2hhZG8iLCJhIjoiY2ppczQ0NzBtMWNydTNrdDl6Z2JhdzZidSJ9.BFD3qzgAC2kMoEZirGaDjA");
-// map object to an array of layers we created.
-var map = L.map("mapid", {
+var myMap = L.map("mapid", {
   center: [37.09, -95.71],
-  zoom: 5,
-  layers: [graymap_background, satellitemap_background, outdoors_background]
+  zoom: 5
 });
-// adding one 'graymap' tile layer to the map.
-graymap_background.addTo(map);
-// layers for two different sets of data, earthquakes and tectonicplates.
+
+var outdoors_background= L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v11.html?title=true&access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NDg1bDA1cjYzM280NHJ5NzlvNDMifQ.d6e-nNyBDtmQCVwVNivz7A#2/0/0', {
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  maxZoom: 18,
+  id: 'mapbox/outdoors-v11',
+  tileSize: 512,
+  zoomOffset: -1,
+  accessToken: API_KEY
+}).addTo(myMap);
+
+
 var tectonicplates = new L.LayerGroup();
 var earthquakes = new L.LayerGroup();
-// base layers
+
 var baseMaps = {
-  Satellite: satellitemap_background,
-  Grayscale: graymap_background,
   Outdoors: outdoors_background
 };
-// overlays
+
 var overlayMaps = {
   "Tectonic Plates": tectonicplates,
   "Earthquakes": earthquakes
 };
-// control which layers are visible.
+
 L
   .control
   .layers(baseMaps, overlayMaps)
-  .addTo(map);
-// retrieve earthquake geoJSON data.
+  .addTo(myMap);
+
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson", function(data) {
   function styleInfo(feature) {
     return {
@@ -47,7 +42,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geo
       weight: 0.5
     };
   }
-  // Define the color of the marker based on the magnitude of the earthquake.
+ 
   function getColor(magnitude) {
     switch (true) {
       case magnitude > 5:
@@ -64,14 +59,14 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geo
         return "#98EE00";
     }
   }
-  // define the radius of the earthquake marker based on its magnitude.
+
   function getRadius(magnitude) {
     if (magnitude === 0) {
       return 1;
     }
     return magnitude * 3;
   }
-  // add GeoJSON layer to the map
+  
   L.geoJson(data, {
     pointToLayer: function(feature, latlng) {
       return L.circleMarker(latlng);
@@ -81,7 +76,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geo
       layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
     }
   }).addTo(earthquakes);
-  earthquakes.addTo(map);
+  earthquakes.addTo(myMap);
   var legend = L.control({
     position: "bottomright"
   });
@@ -104,8 +99,8 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geo
     }
     return div;
   };
-  legend.addTo(map);
-  // retrive Tectonic Plate geoJSON data.
+  legend.addTo(myMap);
+ 
   d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json",
     function(platedata) {
       L.geoJson(platedata, {
@@ -113,7 +108,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geo
         weight: 2
       })
       .addTo(tectonicplates);
-      // add the tectonicplates layer to the map.
-      tectonicplates.addTo(map);
+     
+      tectonicplates.addTo(myMap);
     });
 });
