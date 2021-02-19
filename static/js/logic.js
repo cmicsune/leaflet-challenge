@@ -10,6 +10,8 @@ var map = L.map("mapid", {
   layers: [graymap_background, satellitemap_background, outdoors_background]
 });
 
+graymap_background.addTo(map);
+
 var tectonicplates = new L.LayerGroup();
 var earthquakes = new L.LayerGroup();
 var baseMaps = {
