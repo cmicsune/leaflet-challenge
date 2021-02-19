@@ -1,4 +1,3 @@
-
 var graymap_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?" +
   "access_token=pk.eyJ1IjoiY3NtaWNzdW4iLCJhIjoiY2tsOHY4bTdjMDFyMzJ3cGZ4ejJjd2ZlaiJ9.CcEXO5a02LLK-y3F5qTXhw");
 var satellitemap_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?" +
@@ -6,8 +5,8 @@ var satellitemap_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapb
 var outdoors_background = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/256/{z}/{x}/{y}?" +
   "access_token=pk.eyJ1IjoiY3NtaWNzdW4iLCJhIjoiY2tsOHY4bTdjMDFyMzJ3cGZ4ejJjd2ZlaiJ9.CcEXO5a02LLK-y3F5qTXhw");
 var map = L.map("mapid", {
-  center: [37.09, -95.71],
-  zoom: 5,
+  center: [0.00,0.00],
+  zoom: 1,
   layers: [graymap_background, satellitemap_background, outdoors_background]
 });
 
@@ -16,7 +15,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     maxZoom: 18,
     id: 'mapbox/streets-v11',
     tileSize: 512,
-    zoomOffset: -1,
+    zoomOffset: 20,
     accessToken:API_KEY
 }).addTo(map);
 
